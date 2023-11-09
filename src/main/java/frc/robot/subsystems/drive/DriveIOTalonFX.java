@@ -45,35 +45,16 @@ public class DriveIOTalonFX implements DriveIO {
   private final StatusSignal<Double> yaw = pigeon.getYaw();
 
   public DriveIOTalonFX() {
-    var config = new TalonFXConfiguration();
-    config.CurrentLimits.StatorCurrentLimit = 30.0;
-    config.CurrentLimits.StatorCurrentLimitEnable = true;
+    var config = new TalonSRXConfiguration();
+    config.continuousCurrentLimit = 30;
+    config.enableOptimizations
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    leftLeader.config
+    leftLeader.getAllConfigs
     leftFollower.getConfigurator().apply(config);
     rightLeader.getConfigurator().apply(config);
     rightFollower.getConfigurator().apply(config);
     leftFollower.setControl(new Follower(leftLeader.getDeviceID(), false));
-    rightFollower.setControl(new Follower(rightLeader.getDeviceID(), false));
-
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        100.0, leftPosition, rightPosition, yaw); // Required for odometry, use faster rate
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        50.0,
-        leftVelocity,
-        leftAppliedVolts,
-        leftLeaderCurrent,
-        leftFollowerCurrent,
-        rightVelocity,
-        rightAppliedVolts,
-        rightLeaderCurrent,
-        rightFollowerCurrent);
-    leftLeader.optimizeBusUtilization();
-    leftFollower.optimizeBusUtilization();
-    rightLeader.optimizeBusUtilization();
-    rightFollower.optimizeBusUtilization();
-    pigeon.optimizeBusUtilization();
-  }
+    rightFollower.follow(rightLeader.getDeviceID(),rightFollower, false);
 
   @Override
   public void updateInputs(DriveIOInputs inputs) {
