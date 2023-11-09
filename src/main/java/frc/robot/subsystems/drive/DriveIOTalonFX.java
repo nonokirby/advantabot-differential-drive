@@ -23,23 +23,23 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.
+import com.ctre.phoenix.motorcontrol.can.*;
 
 public class DriveIOTalonFX implements DriveIO {
   private static final double GEAR_RATIO = 6.0;
 
-  private final VictorSPX leftLeader = new VictorSPX(0);
-  private final VictorSPX leftFollower = new VictorSPX(1);
-  private final VictorSPX rightLeader = new VictorSPX(2);
-  private final VictorSPX rightFollower = new VictorSPX(3);
+  private final TalonSRX leftLeader = new TalonSRX(0);
+  private final TalonSRX leftFollower = new TalonSRX(1);
+  private final TalonSRX rightLeader = new TalonSRX(2);
+  private final TalonSRX rightFollower = new TalonSRX(3);
 
-  private final StatusSignal<Double> leftAppliedVolts = leftLeader.getMotorVoltage();
-  private final StatusSignal<Double> leftLeaderCurrent = leftLeader.getStatorCurrent();
-  private final StatusSignal<Double> leftFollowerCurrent = leftFollower.getStatorCurrent();
+  private final Double leftAppliedVolts = leftLeader.getMotorOutputVoltage();
+  private final Double leftLeaderCurrent = leftLeader.getStatorCurrent();
+  private final Double leftFollowerCurrent = leftFollower.getStatorCurrent();
 
-  private final StatusSignal<Double> rightAppliedVolts = rightLeader.getMotorVoltage();
-  private final StatusSignal<Double> rightLeaderCurrent = rightLeader.getStatorCurrent();
-  private final  rightFollowerCurrent = rightFollower.getStatorCurrent();
+  private final Double rightAppliedVolts = rightLeader.getMotorOutputVoltage();
+  private final Double rightLeaderCurrent = rightLeader.getStatorCurrent();
+  private final Double rightFollowerCurrent = rightFollower.getStatorCurrent();
 
   private final Pigeon2 pigeon = new Pigeon2(20);
   private final StatusSignal<Double> yaw = pigeon.getYaw();
@@ -49,7 +49,7 @@ public class DriveIOTalonFX implements DriveIO {
     config.CurrentLimits.StatorCurrentLimit = 30.0;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    leftLeader.getConfigurator().apply(config);
+    leftLeader.config
     leftFollower.getConfigurator().apply(config);
     rightLeader.getConfigurator().apply(config);
     rightFollower.getConfigurator().apply(config);
