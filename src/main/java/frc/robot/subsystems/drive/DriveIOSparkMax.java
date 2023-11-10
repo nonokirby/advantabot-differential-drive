@@ -16,6 +16,7 @@ package frc.robot.subsystems.drive;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -45,20 +46,20 @@ public class DriveIOSparkMax implements DriveIO {
     //rightLeader.restoreFactoryDefaults();
     //leftFollower.restoreFactoryDefaults();
     //rightFollower.restoreFactoryDefaults();
-    LLead.configFactoryDefaults();
+    LLead.configFactoryDefault()
     LLead.setNeutralMode(NeutralMode.Brake);
     LLead.setInverted(false);
 
-    RLead.configFactoryDefaults();
+    RLead.configFactoryDefault();
     RLead.setNeutralMode(NeutralMode.Brake);
     RLead.setInverted(true);
 
-    LFollow.configFactoryDefaults();
+    LFollow.configFactoryDefault();
     LFollow.setNeutralMode(NeutralMode.Brake);
     LFollow.follow(LLead);
     LFollow.setInverted(true);
 
-    RFollow.configFactoryDefaults();
+    RFollow.configFactoryDefault();
     RFollow.setNeutralMode(NeutralMode.Brake);
     RFollow.follow(RLead);
     RFollow.setInverted(true);
