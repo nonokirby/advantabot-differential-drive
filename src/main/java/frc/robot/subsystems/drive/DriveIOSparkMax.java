@@ -16,6 +16,7 @@ package frc.robot.subsystems.drive;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -25,46 +26,69 @@ import edu.wpi.first.math.util.Units;
 public class DriveIOSparkMax implements DriveIO {
   private static final double GEAR_RATIO = 6.0;
 
-  private final CANSparkMax leftLeader = new CANSparkMax(1, MotorType.kBrushless);
-  private final CANSparkMax rightLeader = new CANSparkMax(2, MotorType.kBrushless);
-  private final CANSparkMax leftFollower = new CANSparkMax(3, MotorType.kBrushless);
-  private final CANSparkMax rightFollower = new CANSparkMax(4, MotorType.kBrushless);
-  private final RelativeEncoder leftEncoder = leftLeader.getEncoder();
-  private final RelativeEncoder rightEncoder = rightLeader.getEncoder();
-
-  private final Pigeon2 pigeon = new Pigeon2(20);
-  private final StatusSignal<Double> yaw = pigeon.getYaw();
+  //private final CANSparkMax leftLeader = new CANSparkMax(1, MotorType.kBrushless);
+  //private final CANSparkMax rightLeader = new CANSparkMax(2, MotorType.kBrushless);
+  //private final CANSparkMax leftFollower = new CANSparkMax(3, MotorType.kBrushless);
+  //private final CANSparkMax rightFollower = new CANSparkMax(4, MotorType.kBrushless);
+  //private final RelativeEncoder leftEncoder = leftLeader.getEncoder();
+  //private final RelativeEncoder rightEncoder = rightLeader.getEncoder();
+  private final TalonSRX LLead = new TalonSRX(1);
+  private final TalonSRX LFollow = new TalonSRX(2);
+  private final TalonSRX RLead = new TalonSRX(3);
+  private final TalonSRX RFollow = new TalonSRX(4);
+  
+  //private final Pigeon2 pigeon = new Pigeon2(20);
+  //private final StatusSignal<Double> yaw = pigeon.getYaw();
 
   public DriveIOSparkMax() {
-    leftLeader.restoreFactoryDefaults();
-    rightLeader.restoreFactoryDefaults();
-    leftFollower.restoreFactoryDefaults();
-    rightFollower.restoreFactoryDefaults();
+    //leftLeader.restoreFactoryDefaults();
+    //rightLeader.restoreFactoryDefaults();
+    //leftFollower.restoreFactoryDefaults();
+    //rightFollower.restoreFactoryDefaults();
+    LLead.configFactoryDefaults();
+    LLead.setNeutralMode(NeutralMode.Brake);
+    LLead.setInverted(false);
 
-    leftLeader.setCANTimeout(250);
-    rightLeader.setCANTimeout(250);
-    leftFollower.setCANTimeout(250);
-    rightFollower.setCANTimeout(250);
+    RLead.configFactoryDefaults();
+    RLead.setNeutralMode(NeutralMode.Brake);
+    RLead.setInverted(true);
 
-    leftLeader.setInverted(false);
-    rightLeader.setInverted(true);
-    leftFollower.follow(leftLeader, false);
-    rightFollower.follow(rightLeader, false);
+    LFollow.configFactoryDefaults();
+    LFollow.setNeutralMode(NeutralMode.Brake);
+    LFollow.follow(LLead);
+    LFollow.setInverted(true);
 
-    leftLeader.enableVoltageCompensation(12.0);
-    rightLeader.enableVoltageCompensation(12.0);
-    leftLeader.setSmartCurrentLimit(30);
-    rightLeader.setSmartCurrentLimit(30);
+    RFollow.configFactoryDefaults();
+    RFollow.setNeutralMode(NeutralMode.Brake);
+    RFollow.follow(RLead);
+    RFollow.setInverted(true);
 
-    leftLeader.burnFlash();
-    rightLeader.burnFlash();
-    leftFollower.burnFlash();
-    rightFollower.burnFlash();
 
-    pigeon.getConfigurator().apply(new Pigeon2Configuration());
-    pigeon.getConfigurator().setYaw(0.0);
-    yaw.setUpdateFrequency(100.0);
-    pigeon.optimizeBusUtilization();
+
+    //leftLeader.setCANTimeout(250);
+    //rightLeader.setCANTimeout(250);
+    //leftFollower.setCANTimeout(250);
+    //rightFollower.setCANTimeout(250);
+
+    //leftLeader.setInverted(false);
+    //rightLeader.setInverted(true);
+    //leftFollower.follow(leftLeader, false);
+    //rightFollower.follow(rightLeader, false);
+
+    //leftLeader.enableVoltageCompensation(12.0);
+    //rightLeader.enableVoltageCompensation(12.0);
+    //leftLeader.setSmartCurrentLimit(30);
+    //rightLeader.setSmartCurrentLimit(30);
+
+    //leftLeader.burnFlash();
+    //rightLeader.burnFlash();
+    //leftFollower.burnFlash();
+    //rightFollower.burnFlash();
+
+    //pigeon.getConfigurator().apply(new Pigeon2Configuration());
+    //pigeon.getConfigurator().setYaw(0.0);
+    //yaw.setUpdateFrequency(100.0);
+    //pigeon.optimizeBusUtilization();
   }
 
   @Override

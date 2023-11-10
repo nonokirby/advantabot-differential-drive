@@ -47,15 +47,12 @@ public class DriveIOTalonFX implements DriveIO {
   public DriveIOTalonFX() {
     var config = new TalonSRXConfiguration();
     config.continuousCurrentLimit = 30;
-    config.enableOptimizations
-    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    leftLeader.getAllConfigs
     leftFollower.getConfigurator().apply(config);
     rightLeader.getConfigurator().apply(config);
     rightFollower.getConfigurator().apply(config);
     leftFollower.setControl(new Follower(leftLeader.getDeviceID(), false));
     rightFollower.follow(rightLeader.getDeviceID(),rightFollower, false);
-
+  }
   @Override
   public void updateInputs(DriveIOInputs inputs) {
     BaseStatusSignal.refreshAll(
