@@ -13,15 +13,17 @@
 
 package frc.robot.subsystems.drive;
 
-import com.ctre.phoenix6.StatusSignal;
+/*import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.Pigeon2;*/
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANSparkMax;
+/*import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation2d;*/
 import edu.wpi.first.math.util.Units;
 
 public class DriveIOSparkMax implements DriveIO {
@@ -37,7 +39,10 @@ public class DriveIOSparkMax implements DriveIO {
   private final TalonSRX LFollow = new TalonSRX(2);
   private final TalonSRX RLead = new TalonSRX(3);
   private final TalonSRX RFollow = new TalonSRX(4);
-  
+
+  //private final double LEncoder = LLead.getSelectedSensorPosition();
+  //private final double REncoder = RLead.getSelectedSensorPosition();
+
   //private final Pigeon2 pigeon = new Pigeon2(20);
   //private final StatusSignal<Double> yaw = pigeon.getYaw();
 
@@ -46,9 +51,10 @@ public class DriveIOSparkMax implements DriveIO {
     //rightLeader.restoreFactoryDefaults();
     //leftFollower.restoreFactoryDefaults();
     //rightFollower.restoreFactoryDefaults();
-    LLead.configFactoryDefault()
+    LLead.configFactoryDefault();
     LLead.setNeutralMode(NeutralMode.Brake);
     LLead.setInverted(false);
+    LLead.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     RLead.configFactoryDefault();
     RLead.setNeutralMode(NeutralMode.Brake);
@@ -94,26 +100,26 @@ public class DriveIOSparkMax implements DriveIO {
 
   @Override
   public void updateInputs(DriveIOInputs inputs) {
-    inputs.leftPositionRad = Units.rotationsToRadians(leftEncoder.getPosition() / GEAR_RATIO);
+    inputs.leftPositionRad = Units.rotationsToRadians(LLead.getSelectedSensorPosition() / GEAR_RATIO);
     inputs.leftVelocityRadPerSec =
-        Units.rotationsPerMinuteToRadiansPerSecond(leftEncoder.getVelocity() / GEAR_RATIO);
-    inputs.leftAppliedVolts = leftLeader.getAppliedOutput() * leftLeader.getBusVoltage();
+        Units.rotationsPerMinuteToRadiansPerSecond(LLead.getSelectedSensorVelocity() / GEAR_RATIO);
+    inputs.leftAppliedVolts = LLead.getMotorOutputVoltage() * LLead.getBusVoltage();
     inputs.leftCurrentAmps =
-        new double[] {leftLeader.getOutputCurrent(), leftFollower.getOutputCurrent()};
+        new double[] {LLead.getStatorCurrent(), LFollow.getStatorCurrent()};
 
-    inputs.rightPositionRad = Units.rotationsToRadians(rightEncoder.getPosition() / GEAR_RATIO);
+    inputs.rightPositionRad = Units.rotationsToRadians(RLead.getSelectedSensorPosition() / GEAR_RATIO);
     inputs.rightVelocityRadPerSec =
-        Units.rotationsPerMinuteToRadiansPerSecond(rightEncoder.getVelocity() / GEAR_RATIO);
-    inputs.leftAppliedVolts = rightLeader.getAppliedOutput() * rightLeader.getBusVoltage();
+        Units.rotationsPerMinuteToRadiansPerSecond(RLead.getSelectedSensorVelocity() / GEAR_RATIO);
+    inputs.leftAppliedVolts = RLead.getMotorOutputVoltage() * RLead.getBusVoltage();
     inputs.leftCurrentAmps =
-        new double[] {rightLeader.getOutputCurrent(), rightFollower.getOutputCurrent()};
+        new double[] {RLead.getStatorCurrent(), RFollow.getStatorCurrent()};
 
-    inputs.gyroYaw = Rotation2d.fromDegrees(-yaw.refresh().getValueAsDouble());
+    //inputs.gyroYaw = Rotation2d.fromDegrees(-yaw.refresh().getValueAsDouble());
   }
 
   @Override
-  public void setVoltage(double leftVolts, double rightVolts) {
-    leftLeader.setVoltage(leftVolts);
-    rightLeader.setVoltage(rightVolts);
+  public void setOutput(double leftOutput, double rightOutput) {
+    LLead.set(TalonSRXControlMode.PercentOutput, leftOutput)
+    RLead.set(TalonSRXControlMode.PercentOutput, rightOutput);
   }
 }
