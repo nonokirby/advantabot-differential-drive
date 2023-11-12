@@ -19,17 +19,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveWithFlywheelAuto;
-//import frc.robot.commands.FeedForwardCharacterization;
+// import frc.robot.commands.FeedForwardCharacterization;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveIO;
 import frc.robot.subsystems.drive.DriveIOSim;
-import frc.robot.subsystems.drive.DriveIOSparkMax;
-//import frc.robot.subsystems.flywheel.Flywheel;
-//import frc.robot.subsystems.flywheel.FlywheelIO;
-//import frc.robot.subsystems.flywheel.FlywheelIOSim;
-//import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
+import frc.robot.subsystems.drive.DriveIOTalonSRX;
+// import frc.robot.subsystems.flywheel.Flywheel;
+// import frc.robot.subsystems.flywheel.FlywheelIO;
+// import frc.robot.subsystems.flywheel.FlywheelIOSim;
+// import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,7 +39,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
- // private final Flywheel flywheel;
+  // private final Flywheel flywheel;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -48,16 +47,16 @@ public class RobotContainer {
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser =
       new LoggedDashboardChooser<>("Auto Choices");
- // private final LoggedDashboardNumber flywheelSpeedInput =
-     // new LoggedDashboardNumber("Flywheel Speed", 1500.0);
+  // private final LoggedDashboardNumber flywheelSpeedInput =
+  // new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        drive = new Drive(new DriveIOSparkMax());
-       // flywheel = new Flywheel(new FlywheelIOSparkMax());
+        drive = new Drive(new DriveIOTalonSRX());
+        // flywheel = new Flywheel(new FlywheelIOSparkMax());
         // drive = new Drive(new DriveIOTalonFX());
         // flywheel = new Flywheel(new FlywheelIOTalonFX());
         break;
@@ -65,13 +64,13 @@ public class RobotContainer {
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive = new Drive(new DriveIOSim());
-       // flywheel = new Flywheel(new FlywheelIOSim());
+        // flywheel = new Flywheel(new FlywheelIOSim());
         break;
 
       default:
         // Replayed robot, disable IO implementations
         drive = new Drive(new DriveIO() {});
-       // flywheel = new Flywheel(new FlywheelIO() {});
+        // flywheel = new Flywheel(new FlywheelIO() {});
         break;
     }
 
@@ -80,11 +79,11 @@ public class RobotContainer {
     autoChooser.addOption("Example Auto", new DriveWithFlywheelAuto(drive));
 
     // Set up FF characterization routine
-   /* autoChooser.addOption(
-         "Flywheel FF Characterization",
-        new FeedForwardCharacterization(
-            flywheel, flywheel::runCharacterizationVolts, flywheel::getCharacterizationVelocity));*/
-                  
+    /* autoChooser.addOption(
+     "Flywheel FF Characterization",
+    new FeedForwardCharacterization(
+        flywheel, flywheel::runCharacterizationVolts, flywheel::getCharacterizationVelocity));*/
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -99,7 +98,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         Commands.run(
             () -> drive.driveArcade(-controller.getLeftY(), controller.getLeftX()), drive));
-    //controller.a().whileTrue(Commands.startEnd(() -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+    // controller.a().whileTrue(Commands.startEnd(() ->
+    // flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
   }
 
   /**
