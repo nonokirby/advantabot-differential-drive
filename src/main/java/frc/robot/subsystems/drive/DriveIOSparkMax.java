@@ -119,7 +119,7 @@ public class DriveIOSparkMax implements DriveIO {
 
   @Override
   public void setOutput(double leftOutput, double rightOutput) {
-    LLead.set(TalonSRXControlMode.PercentOutput, leftOutput)
+    LLead.set(TalonSRXControlMode.PercentOutput, leftOutput);
     RLead.set(TalonSRXControlMode.PercentOutput, rightOutput);
   }
 }
