@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.util.Units;
 
+
 /*import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -45,7 +46,7 @@ public class DriveIOTalonSRX implements DriveIO {
 
   // private final Pigeon2 pigeon = new Pigeon2(20);
   // private final StatusSignal<Double> yaw = pigeon.getYaw();
-
+    private final doouble yaw =
   public DriveIOTalonSRX() {
     // leftLeader.restoreFactoryDefaults();
     // rightLeader.restoreFactoryDefaults();
