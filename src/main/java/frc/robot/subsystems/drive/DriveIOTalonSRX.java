@@ -46,7 +46,7 @@ public class DriveIOTalonSRX implements DriveIO {
   // private final Pigeon2 pigeon = new Pigeon2(20);
   // private final StatusSignal<Double> yaw = pigeon.getYaw();
 
-  public DriveIOTalonSRX() {
+  public DriveIOTalonSRXsdds() {
     // leftLeader.restoreFactoryDefaults();
     // rightLeader.restoreFactoryDefaults();
     // leftFollower.restoreFactoryDefaults();
