@@ -50,7 +50,7 @@ public class DriveIOTalonSRX implements DriveIO {
   private AHRS navx;
   double angle = navx.getAngle();
 
-  public DriveIOTalonSRXsdds() {
+  public DriveIOTalonSRX() {
     // leftLeader.restoreFactoryDefaults();
     // rightLeader.restoreFactoryDefaults();
     // leftFollower.restoreFactoryDefaults();
