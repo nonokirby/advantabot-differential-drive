@@ -13,7 +13,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SerialPort;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -22,7 +23,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import com.kauailabs.navx.frc.AHRS;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,8 +33,7 @@ import com.kauailabs.navx.frc.AHRS;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
-  
-  
+  public AHRS ahrs;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -90,7 +89,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
+    ahrs = new AHRS(SPI.Port.kMXP);
   }
 
   /** This function is called periodically during all modes. */
