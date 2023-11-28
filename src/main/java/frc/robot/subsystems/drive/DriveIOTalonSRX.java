@@ -17,7 +17,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-//import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 
 /*import com.ctre.phoenix6.StatusSignal;
@@ -26,7 +25,6 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 /*import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;*/
 public class DriveIOTalonSRX implements DriveIO {
   private static final double GEAR_RATIO = 6.0;
@@ -47,8 +45,8 @@ public class DriveIOTalonSRX implements DriveIO {
 
   // private final Pigeon2 pigeon = new Pigeon2(20);
   // private final StatusSignal<Double> yaw = pigeon.getYaw();
-  //private AHRS navx;
-  //double angle = navx.getAngle();
+  // private AHRS navx;
+  // double angle = navx.getAngle();
 
   public DriveIOTalonSRX() {
     // leftLeader.restoreFactoryDefaults();
@@ -110,7 +108,6 @@ public class DriveIOTalonSRX implements DriveIO {
         Units.rotationsPerMinuteToRadiansPerSecond(LLead.getSelectedSensorVelocity() / GEAR_RATIO);
     inputs.leftAppliedVolts = LLead.getMotorOutputVoltage() * LLead.getBusVoltage();
     inputs.leftCurrentAmps = new double[] {LLead.getStatorCurrent(), LFollow.getStatorCurrent()};
-
     inputs.rightPositionRad =
         Units.rotationsToRadians(RLead.getSelectedSensorPosition() / GEAR_RATIO);
     inputs.rightVelocityRadPerSec =
