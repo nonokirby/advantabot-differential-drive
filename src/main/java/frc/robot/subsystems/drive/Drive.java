@@ -69,7 +69,6 @@ public class Drive extends SubsystemBase {
   public void setPose(Pose2d pose) {
     odometry.resetPosition(inputs.gyroYaw, getLeftPositionMeters(), getRightPositionMeters(), pose);
   }
-
   /** Returns the position of the left wheels in meters. */
   public double getLeftPositionMeters() {
     return inputs.leftPositionRad * WHEEL_RADIUS;
